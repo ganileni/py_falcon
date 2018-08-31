@@ -1,6 +1,5 @@
 import matlab
 import matlab.engine
-import numpy as np
 import os
 from functools import wraps
 
