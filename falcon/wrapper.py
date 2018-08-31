@@ -46,18 +46,23 @@ class EngineWrapper():
             self.is_started = True
         return getattr(self.eng, item)
 
-    def __del__(self):
+    def shutdown_engine(self):
         if self.is_started:
             self.quit()
+            self.is_started = False
+
+    def __del__(self):
+        if self.is_started:
+            self.shutdown_engine()
 
 
-_engine = EngineWrapper()
+default_engine = EngineWrapper()
 
 
 def quit_matlab():
     """Stops the global lazy-loaded engine"""
-    global _engine
-    _engine.quit()
+    global default_engine
+    default_engine.shutdown_engine()
 
 
 def lazy_load_engine(func):
@@ -66,10 +71,23 @@ def lazy_load_engine(func):
 
     @wraps(func)  # to preserve signature
     def wrapper(*args, **kwargs):
-        global _engine
-        kwargs['eng'] = _engine
+        global default_engine
+        kwargs['eng'] = default_engine
         return func(*args, **kwargs)
 
     return wrapper
 
 
+class AutoEngineShutdown():
+    """Context manager to automatically close MATLAB engine on exit."""
+
+    def __init__(self):
+        pass
+
+    def __enter__(self):
+        global default_engine
+        self.engine_wrapper = default_engine
+        return default_engine
+
+    def __exit__(self, type, value, traceback):
+        self.engine_wrapper.shutdown_engine()
