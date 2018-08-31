@@ -12,7 +12,7 @@ The only thing you'll need is `falcon.nested_test()`, FALCON's main routine, fro
 import numpy as np
 test_matrix = np.loadtxt('test.csv',delimiter=',')
 
-# literally two lines
+# literally two lines, MATLAB starts automatically
 import falcon
 result = falcon.nested_test(test_matrix)
 
@@ -20,6 +20,13 @@ print(result)
 
 # recommended: quit the MATLAB engine when you're done
 falcon.quit_matlab()
+
+# if you don't want to have to remember to quit the MATLAB engine,
+# a context manager is available that shuts it down on exit:
+
+# `as eng` not required, use if you need direct access to MATLAB engine
+with falcon.AutoEngineShutdown() as eng:
+     result = falcon.nested_test(test_matrix)
 ```
 
 `nested_test()`'s docstring documents the various options of the package. If you need more understanding, in this order, delve into the [MATLAB code](falcon/PERFORM_NESTED_TEST.m); see FALCON's [repository](https://github.com/sjbeckett/FALCON) (which contains much better documentation); or go hardcore and read directly his [PhD dissertaton](https://www.researchgate.net/profile/Stephen_Beckett/publication/281101612_Nestedness_and_modularity_in_bipartite_networks/links/55d4ecfd08ae43dd17de4cf4/Nestedness-and-modularity-in-bipartite-networks.pdf).
