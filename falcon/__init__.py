@@ -1,4 +1,7 @@
+# import wrapper
 from falcon.wrapper import *
+
+import numpy as np
 
 allowed_measures = ['DISCREPANCY', 'JDMnestedness', 'MANHATTAN_DISTANCE', 'NODF', 'NTC', 'SPECTRAL_RADIUS', 'WNODF']
 
@@ -16,9 +19,9 @@ def nested_test(matrix,
     Args:
         matrix: the matrix to test
         bintest: is the matrix binary (1) quantitative (0) or both ((2) the case of spectral radius for example).
-        sortVar: specifies whether to sortVar the matrix for maximal packaging (1) or not (0). Is applied both to input and null matrices, but only makes a difference to NODF, DISCREPANCY and MANHATTAN DISTANCE scores and tests.
+        sortVar: specifies whether to sortVar the matrix for maximal packaging (1) or not (0). Is applied both to input and null matrices, but only makes a difference to NODF, DISCREPANCY and MANHATTAN DISTANCE scores and test.
         functhand:  specifies function name of measure(s) to perform. It is important that this argument is a list.
-        nullmodels: pecifies which null tests to run. [] performs all that can be done based on whether the test is binary/quantitative. Binary null tests are positively numbered e.g.(1,2,3), whilst quantitative null tests are negatively numbered e.g. (-1,-2,-3). To run binary null tests 1 and 3 for example you should use the argument [1 3]
+        nullmodels: pecifies which null test to run. [] performs all that can be done based on whether the test is binary/quantitative. Binary null test are positively numbered e.g.(1,2,3), whilst quantitative null test are negatively numbered e.g. (-1,-2,-3). To run binary null test 1 and 3 for example you should use the argument [1 3]
         EnsembleNumber: To use the adaptive method this should be set as [], else the fixed solver is invoked which performs the set number of nulls in its ensemble e.g. if argument was 50, 50 null models would be performed.
         plotON: Ignored. In MATLAB, determines whether a plot should be displayed to the user about how the test measurement compares to those found in the null ensemble. 1 indicates the plotON should be made, 0 indicates it should not.
         eng: MATLAB engine. Ignore if you're using module's global engine.

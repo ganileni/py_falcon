@@ -43,10 +43,12 @@ class EngineWrapper():
             return self.is_started
         if self.is_started is False:
             self.eng = _start_matlab()
+            self.is_started = True
         return getattr(self.eng, item)
 
     def __del__(self):
-        self.quit()
+        if self.is_started:
+            self.quit()
 
 
 _engine = EngineWrapper()
@@ -69,3 +71,5 @@ def lazy_load_engine(func):
         return func(*args, **kwargs)
 
     return wrapper
+
+
