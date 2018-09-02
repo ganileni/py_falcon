@@ -39,12 +39,13 @@ class EngineWrapper():
         self.is_started = False
 
     def __getattr__(self, item):
-        if item == 'is_started':
-            return self.is_started
-        if self.is_started is False:
-            self.eng = _start_matlab()
-            self.is_started = True
-        return getattr(self.eng, item)
+        if item in self.__dir__():
+            return getattr(self,item)
+        else:
+            if not self.is_started:
+                self.eng = _start_matlab()
+                self.is_started = True
+            return getattr(self.eng, item)
 
     def shutdown_engine(self):
         if self.is_started:
