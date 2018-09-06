@@ -11,12 +11,12 @@ class TempWD():
     """Context manager to temporarily switch cwd to `dir_path`"""
 
     def __init__(self, dir_path):
+        pass
+
+    def __enter__(self):
         self.cwd = os.getcwd()
         self.dir_path = dir_path
         os.chdir(self.dir_path)
-
-    def __enter__(self):
-        return None
 
     def __exit__(self, type, value, traceback):
         os.chdir(self.cwd)
